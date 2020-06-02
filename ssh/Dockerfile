@@ -9,6 +9,6 @@ RUN echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config ; \
     ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' ;\
     mkdir /var/run/sshd
 
-EXPOSE 8080
+EXPOSE 22
 
 CMD /usr/sbin/sshd -D
