@@ -20,17 +20,18 @@ ADD /src/mysql-5.7.28-linux-glibc2.12-x86_64.tar.gz ${mysqlDir}
 RUN /usr/sbin/useradd -s /usr/sbin/nologin mysql ; \
     mkdir -p ${mysqlDir}/data/3306; mkdir -p ${mysqlDir}/etc/ ; \
     mkdir -p ${logDir}/3306 ; \
-    mv ${mysqlDir}/mysql-5.7.28-linux-glibc2.12-x86_64 ${mysqlDir}/mysql ; \
+    mv ${mysqlDir}/mysql-5.7.28-linux-glibc2.12-x86_64 ${mysqlDir}/mysql 
+
+RUN /usr/bin/chown -R mysql.mysql ${mysqlDir}/mysql ; \
+    /usr/bin/chown -R mysql.mysql ${mysqlDir}/data ${logDir} ; \
+    ln -s ${mysqlDir}/mysql/bin/* /usr/local/bin/ ; \
+    yum -y install libaio-devel numactl libncurses*
 
 #add my.cnf
 ADD /etc/my.cnf ${mysqlDir}/etc/
 
 #Initialize the database.
-RUN chown -R mysql.mysql ${mysqlDir}/mysql ; \
-    chown -R ${mysqlDir}/data/ ${logDir} ; \
-    ln -s ${mysqlDir}/mysql/bin/* /usr/local/bin/ ; \
-    yum -y install libaio-devel numactl libncurses*
-RUN mysqld --initialize --user=mysql --basedir=${mysqlDir}/mysql \
+RUN mysqld --initialize-insecure --user=mysql --basedir=${mysqlDir}/mysql \
     --datadir=${mysqlDir}/data/3306
 
 #volume
@@ -38,3 +39,8 @@ VOLUME ["${mysqlDir}/data","${logDir}","${mysqlDir}/etc"]
 
 EXPOSE 3306
 
+#mysql startup script
+ADD /etc/mysqlStart.sh /usr/local/bin/
+RUN /usr/bin/chmod +x /usr/local/bin/mysqlStart.sh
+
+ENTRYPOINT /usr/local/bin/mysqlStart.sh
