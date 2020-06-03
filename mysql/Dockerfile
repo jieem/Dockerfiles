@@ -1,9 +1,11 @@
 FROM centos:latest
 MAINTAINER minj "mminjjie@gmail.com"
 
-#docker run -d -v /opt/mysql5.7/data/:/usr/local/mysql5.7/data/ \
+#docker run -d --name mysql \
+#       -v /opt/mysql5.7/data/:/usr/local/mysql5.7/data/ \
 #       -v /opt/mysql5.7/log:/var/log/mysql5.7 \
 #       -v /opt/mysql5.7/etc:/usr/local/mysql5.7/etc \
+#       -v /opt/mysql5.7/tmp:/usr/local/mysql5.7/tmp \
 #       -p 3306:3306 \
 #       centos:mysql_v1
 
@@ -25,7 +27,7 @@ ADD /src/mysql-5.7.28-linux-glibc2.12-x86_64.tar.gz ${mysqlDir}
 #Create a basic environment
 RUN /usr/sbin/useradd -s /usr/sbin/nologin mysql ; \
     mkdir -p ${mysqlDir}/data/3306; mkdir -p ${mysqlDir}/etc/ ; \
-    mkdir -p ${logDir}/3306 ; \
+    mkdir -p ${logDir}/3306 ; mkdir -p ${mysqlDir}/tmp \
     mv ${mysqlDir}/mysql-5.7.28-linux-glibc2.12-x86_64 ${mysqlDir}/mysql 
 
 RUN /usr/bin/chown -R mysql.mysql ${mysqlDir}/mysql ; \
@@ -41,12 +43,12 @@ RUN mysqld --initialize-insecure --user=mysql --basedir=${mysqlDir}/mysql \
     --datadir=${mysqlDir}/data/3306
 
 #volume
-VOLUME ["${mysqlDir}/data","${logDir}","${mysqlDir}/etc"]
+VOLUME ["${mysqlDir}/data","${logDir}","${mysqlDir}/etc","${mysqlDir}/tmp"]
 
 EXPOSE 3306
 
 #mysql startup script
-ADD /etc/mysqlStart.sh /usr/local/bin/
-RUN /usr/bin/chmod +x /usr/local/bin/mysqlStart.sh
+#ADD /etc/mysqlStart.sh /usr/local/bin/
+#RUN /usr/bin/chmod +x /usr/local/bin/mysqlStart.sh
 
-ENTRYPOINT /usr/local/bin/mysqlStart.sh
+CMD /usr/local/bin/mysqld --defaults-file=/usr/local/mysql5.7/etc/my.cnf
