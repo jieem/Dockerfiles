@@ -1,6 +1,12 @@
 FROM centos:latest
 MAINTAINER minj "mminjjie@gmail.com"
 
+#docker run -d -v /opt/mysql5.7/data/:/usr/local/mysql5.7/data/ \
+#       -v /opt/mysql5.7/log:/var/log/mysql5.7 \
+#       -v /opt/mysql5.7/etc:/usr/local/mysql5.7/etc \
+#       -p 3306:3306 \
+#       centos:mysql_v1
+
 #Update yum source
 RUN mv /etc/yum.repos.d/CentOS-Base.repo \
     /etc/yum.repos.d/CentOS-Base.repo.backup; \
