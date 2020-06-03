@@ -39,8 +39,8 @@ RUN /usr/bin/chown -R mysql.mysql ${mysqlDir}/mysql ; \
 ADD /etc/my.cnf ${mysqlDir}/etc/
 
 #Initialize the database.
-RUN mysqld --initialize-insecure --user=mysql --basedir=${mysqlDir}/mysql \
-    --datadir=${mysqlDir}/data/3306
+RUN /usr/local/bin/mysqld --initialize-insecure --user=mysql \
+    --basedir=${mysqlDir}/mysql --datadir=${mysqlDir}/data/3306
 
 #volume
 VOLUME ["${mysqlDir}/data","${logDir}","${mysqlDir}/etc","${mysqlDir}/tmp"]
