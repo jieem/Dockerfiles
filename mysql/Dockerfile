@@ -1,14 +1,6 @@
 FROM centos:latest
 MAINTAINER minj "mminjjie@gmail.com"
 
-#docker run -d --name mysql \
-#-v /opt/mysql5.7/data/:/usr/local/mysql5.7/data/ \
-#-v /opt/mysql5.7/log:/var/log/mysql5.7 \
-#-v /opt/mysql5.7/etc:/usr/local/mysql5.7/etc \
-#-v /opt/mysql5.7/tmp:/usr/local/mysql5.7/tmp \
-#-p 3306:3306 \
-#centos:mysql_v1
-
 #Update yum source
 RUN mv /etc/yum.repos.d/CentOS-Base.repo \
     /etc/yum.repos.d/CentOS-Base.repo.backup; \
@@ -17,18 +9,18 @@ RUN mv /etc/yum.repos.d/CentOS-Base.repo \
     yum clean all ; yum makecache
 
 #Set environment variables
-ARG mysqlDir=/usr/local/mysql5.7
-ARG logDir=/var/log/mysql5.7
+ARG mysqlDir=/usr/local/mysql8.0
+ARG logDir=/var/log/mysql8.0
 
 #Copy mysql compressed package
-#ADD url /usr/local/mysql5.7/
-ADD /src/mysql-5.7.28* ${mysqlDir}
+#ADD url /usr/local/mysql8.0/
+ADD /src/mysql-8.0* ${mysqlDir}
 
 #Create a basic environment
 RUN /usr/sbin/useradd -s /usr/sbin/nologin mysql ; \
     mkdir -p ${mysqlDir}/data/3306 ${mysqlDir}/etc/ ; \
-    mkdir -p ${logDir}/3306 ${mysqlDir}/tmp ; \
-    mv ${mysqlDir}/mysql-5.7.28* ${mysqlDir}/mysql 
+    mkdir -p ${logDir}/3306 ; \
+    mv ${mysqlDir}/mysql-8.0* ${mysqlDir}/mysql 
 
 RUN /usr/bin/chown -R mysql.mysql ${mysqlDir}/mysql ; \
     /usr/bin/chown -R mysql.mysql ${mysqlDir}/data ${logDir} ; \
@@ -43,7 +35,7 @@ RUN /usr/local/bin/mysqld --initialize-insecure --user=mysql \
     --basedir=${mysqlDir}/mysql --datadir=${mysqlDir}/data/3306
 
 #volume
-VOLUME ["${mysqlDir}/data","${logDir}","${mysqlDir}/etc","${mysqlDir}/tmp"]
+VOLUME ["/tmp/mysql8.0"]
 
 EXPOSE 3306
 
@@ -51,4 +43,4 @@ EXPOSE 3306
 #ADD /etc/mysqlStart.sh /usr/local/bin/
 #RUN /usr/bin/chmod +x /usr/local/bin/mysqlStart.sh
 
-CMD /usr/local/bin/mysqld --defaults-file=/usr/local/mysql5.7/etc/my.cnf
+CMD /usr/local/bin/mysqld --defaults-file=/usr/local/mysql8.0/etc/my.cnf
