@@ -40,7 +40,8 @@ VOLUME ["/tmp/mysql8.0"]
 EXPOSE 3306
 
 #mysql startup script
-#ADD /etc/mysqlStart.sh /usr/local/bin/
-#RUN /usr/bin/chmod +x /usr/local/bin/mysqlStart.sh
+ADD /etc/docker-entrypoint.sh /usr/local/bin/
+RUN /usr/bin/chmod +x /usr/local/bin/docker-entrypoint.sh
 
-CMD /usr/local/bin/mysqld --defaults-file=/usr/local/mysql8.0/etc/my.cnf
+CMD ["/usr/local/bin/docker-entrypoint.sh"]
+
