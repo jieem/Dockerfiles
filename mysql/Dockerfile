@@ -2,12 +2,12 @@ FROM centos:latest
 MAINTAINER minj "mminjjie@gmail.com"
 
 #docker run -d --name mysql \
-#       -v /opt/mysql5.7/data/:/usr/local/mysql5.7/data/ \
-#       -v /opt/mysql5.7/log:/var/log/mysql5.7 \
-#       -v /opt/mysql5.7/etc:/usr/local/mysql5.7/etc \
-#       -v /opt/mysql5.7/tmp:/usr/local/mysql5.7/tmp \
-#       -p 3306:3306 \
-#       centos:mysql_v1
+#-v /opt/mysql5.7/data/:/usr/local/mysql5.7/data/ \
+#-v /opt/mysql5.7/log:/var/log/mysql5.7 \
+#-v /opt/mysql5.7/etc:/usr/local/mysql5.7/etc \
+#-v /opt/mysql5.7/tmp:/usr/local/mysql5.7/tmp \
+#-p 3306:3306 \
+#centos:mysql_v1
 
 #Update yum source
 RUN mv /etc/yum.repos.d/CentOS-Base.repo \
@@ -22,13 +22,13 @@ ARG logDir=/var/log/mysql5.7
 
 #Copy mysql compressed package
 #ADD url /usr/local/mysql5.7/
-ADD /src/mysql-5.7.28-linux-glibc2.12-x86_64.tar.gz ${mysqlDir}
+ADD /src/mysql-5.7.28* ${mysqlDir}
 
 #Create a basic environment
 RUN /usr/sbin/useradd -s /usr/sbin/nologin mysql ; \
-    mkdir -p ${mysqlDir}/data/3306; mkdir -p ${mysqlDir}/etc/ ; \
-    mkdir -p ${logDir}/3306 ; mkdir -p ${mysqlDir}/tmp \
-    mv ${mysqlDir}/mysql-5.7.28-linux-glibc2.12-x86_64 ${mysqlDir}/mysql 
+    mkdir -p ${mysqlDir}/data/3306 ${mysqlDir}/etc/ ; \
+    mkdir -p ${logDir}/3306 ${mysqlDir}/tmp ; \
+    mv ${mysqlDir}/mysql-5.7.28* ${mysqlDir}/mysql 
 
 RUN /usr/bin/chown -R mysql.mysql ${mysqlDir}/mysql ; \
     /usr/bin/chown -R mysql.mysql ${mysqlDir}/data ${logDir} ; \
