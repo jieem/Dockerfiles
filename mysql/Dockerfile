@@ -1,5 +1,6 @@
 FROM centos:latest
 MAINTAINER minj "mminjjie@gmail.com"
+LABEL version="v1" description="database" by=“mysql8.0.18”
 
 #Update yum source
 RUN mv /etc/yum.repos.d/CentOS-Base.repo \
