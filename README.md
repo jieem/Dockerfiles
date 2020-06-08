@@ -8,7 +8,8 @@ docker run -it --name ssh -p 22:22 xx:xx /bin/bash
 #mysql5.7.28
 docker build -t centos:mysql_v1 .
 docker run -d --name mysql [--privileged=true] \
--v /tmp/mysql8.0:/tmp/mysql8.0 \
+-v /opt/mysql8.0/tmp:/tmp/mysql8.0 \
+#-v /opt/mysql8.0/etc/my.cnf:/usr/local/mysql8.0/etc/my.cnf
 -p 3306:3306 centos:mysql_v1
 
 #tomcat9.0.35
