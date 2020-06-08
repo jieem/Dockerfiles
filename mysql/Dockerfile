@@ -26,7 +26,7 @@ RUN /usr/sbin/useradd -s /usr/sbin/nologin mysql ; \
 RUN /usr/bin/chown -R mysql.mysql ${mysqlDir}/mysql ; \
     /usr/bin/chown -R mysql.mysql ${mysqlDir}/data ${logDir} ; \
     ln -s ${mysqlDir}/mysql/bin/* /usr/local/bin/ ; \
-    yum -y install libaio-devel numactl libncurses*
+    yum -y install libaio-devel numactl libncurses* perl perl-devel \
 
 #add my.cnf
 ADD /etc/my.cnf ${mysqlDir}/etc/
