@@ -15,7 +15,7 @@ ARG logDir=/var/log/mysql8.0
 
 #Copy mysql compressed package
 #ADD url /usr/local/mysql8.0/
-ADD /src/mysql-8.0* ${mysqlDir}
+ADD ./src/mysql-8.0* ${mysqlDir}
 
 #Create a basic environment
 RUN /usr/sbin/useradd -s /usr/sbin/nologin mysql ; \
@@ -26,10 +26,10 @@ RUN /usr/sbin/useradd -s /usr/sbin/nologin mysql ; \
 RUN /usr/bin/chown -R mysql.mysql ${mysqlDir}/mysql ; \
     /usr/bin/chown -R mysql.mysql ${mysqlDir}/data ${logDir} ; \
     ln -s ${mysqlDir}/mysql/bin/* /usr/local/bin/ ; \
-    yum -y install libaio-devel numactl libncurses* perl perl-devel \
+    yum -y install libaio-devel numactl libncurses* perl perl-devel 
 
 #add my.cnf
-ADD /etc/my.cnf ${mysqlDir}/etc/
+COPY ./etc/my.cnf ${mysqlDir}/etc
 
 #Initialize the database.
 RUN /usr/local/bin/mysqld --initialize-insecure --user=mysql \
@@ -41,7 +41,7 @@ VOLUME ["/tmp/mysql8.0"]
 EXPOSE 3306
 
 #mysql startup script
-ADD /etc/docker-entrypoint.sh /usr/local/bin/
+COPY ./etc/docker-entrypoint.sh /usr/local/bin
 RUN /usr/bin/chmod +x /usr/local/bin/docker-entrypoint.sh
 
 CMD ["/usr/local/bin/docker-entrypoint.sh"]
