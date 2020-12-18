@@ -17,3 +17,11 @@ docker build -t centos:tomcat_v1 .
 docker run -d --name tomcat \
 -v /tmp/tomcat:/tmp/tomcat \
 -p 8080:8080 centos:tomcat_v1
+
+#xtrabackup:5.7
+docker run -d -p 3307:3306 \
+-v /path/data:/opt/mysql/data \
+-v /path/conf:/etc/mysql/conf.d \
+-e MYSQL_ROOT_PASSWORD=root \
+--name xtrabackup xtrabackup:5.7
+
