@@ -1,0 +1,170 @@
+"=================
+"vim config
+"=================
+set nocompatible
+set backspace=indent,eol,start
+set nu
+"set cursorline
+set showmatch
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+set background=dark
+set vb t_vb=
+set encoding=utf-8
+set incsearch
+set ignorecase
+syntax on
+set foldmethod=syntax
+set nofoldenable
+filetype plugin indent on
+let mapleader="\<space>"
+nmap <leader>h <C-w>h
+nmap <leader>l <C-w>l
+nmap <leader>j <C-w>j
+nmap <leader>k <C-w>k
+nmap <leader>o zO
+nmap <leader>c zC
+nmap <leader>w :w<CR>
+nmap <leader>q :q<CR>
+
+"=================
+"vim-plug
+"=================
+call plug#begin('~/.vim/plugged')
+Plug 'jiangmiao/auto-pairs'
+Plug 'preservim/nerdtree'
+Plug 'preservim/tagbar'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'dense-analysis/ale'
+Plug 'Chiel92/vim-autoformat'
+call plug#end()
+
+"=================
+"NERDTree
+"=================
+let NERDTreeQuitOnOpen=1 
+let NERDTreeShowHidden=0
+let NERDTreeIgnore=['\.pyc$','\~$','\.swp']
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+nmap ff :NERDTreeToggle<CR>
+
+"=================
+"tagbar
+"=================
+let g:tagbar_sort = 0
+nmap tt :TagbarToggle<CR>
+
+"=================
+"YouCompleteMe
+"=================
+set completeopt=menu,menuone
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/third_party/ycmd/cpp/.ycm_extra_conf.py'
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_filetype_blacklist = {
+\   'tagbar': 1,
+\   'notes': 1,
+\   'markdown': 1,
+\   'netrw': 1,
+\   'unite': 1,
+\   'text': 1,
+\   'vimwiki': 1,
+\   'pandoc': 1,
+\   'infolog': 1,
+\   'leaderf': 1,
+\   'mail': 1
+\ }
+
+"=================
+"vim-go
+"=================
+let g:go_fmt_command = "goimports"
+let g:go_autodetect_gopath = 1
+let g:go_list_type = "quickfix"
+let g:go_version_warning = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_generate_tags = 1
+
+nmap <F9> :w<CR> :GoRun<CR>
+nmap <leader>g :GoDoc<CR>
+
+"=================
+"ale
+"=================
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_save = 1
+let g:ale_linters_explicit = 1
+"#run fixers when you save files.
+"let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_options = '--config /home/develop/.prettierrc.json'
+let g:ale_javascript_eslint_options = '--config /home/develop/.eslintrc.json'
+let g:ale_linters = {
+\   'cpp': ['clang'],
+\   'c': ['clang'],
+\   'html': ['htmlhint'],
+\   'css': ['csslint'],
+\   'javascript': ['eslint'],
+\ }
+let g:ale_fixers = {
+\   'css': ['prettier'],
+\   'html': ['prettier'],
+\   'javascript': ['prettier', 'eslint'],
+\ }
+nmap <leader>p <Plug>(ale_previous_wrap)
+nmap <leader>n <Plug>(ale_next_wrap)
+nmap <Leader>e :ALEDetail<CR>
+nmap <leader>f :ALEFix<CR>
+
+"=================
+"auto-format
+"=================
+autocmd BufWrite *.c,*.cpp :Autoformat
+
+"=================
+"build and run .c
+"=================
+nmap <F10> :w<CR> :!gcc -Wall -Wextra -Werror -o %< % && ./%< <CR>
+
+"=================
+"load template
+"=================
+autocmd BufNewFile *.html 0r ~/.vim/template/config.html
+
+"================
+"hot key list
+"================
+"nmap <leader>c #close fold, zC
+"nmap <Leader>d #open go doc, :GoDoc<CR>  
+"nmap <leader>e #show error details, :ALEDetail<CR>
+"nmap <leader>f #fix files of http/css/js by ale, :ALEFix<CR>
+"nmap <leader>h #move up, <C-w>h  
+"nmap <leader>j #move right, <C-w>j
+"nmap <leader>k #move left, <C-w>k  
+"nmap <leader>l #move down, <C-w>l  
+"nmap <leader>n #next error, <Plug>(ale_next_wrap)
+"nmap <leader>o #open fold, zO
+"nmap <leader>p #previous error, <Plug>(ale_previous_wrap)
+"nmap <leader>q #exit vim, :q<CR>
+"nmap <leader>w #save file, :w<CR>  
+"nmap ff        #open NERDTree, :NERDTreeToggle<CR>
+"nmap tt        #open tagBar, :TagbarToggle<CR>  
+"nmap <F9>      #build and run go, :w<CR> :GoRun<CR>  
+"nmap <F10>     #build and run c/c++

@@ -1,0 +1,35 @@
+{
+  "parser": "espree",
+
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "script",
+    "ecmafeatures": {
+      "globalReturn": false,
+      "impliedStrict": false,
+      "jsx": false,
+      "experimentalObjectRestSpread": false
+    }
+  },
+
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "commonjs": false,
+    "mocha": true,
+    "jquery": true
+  },
+
+  "rules": {
+    "eqeqeq": "warn",
+    "curly": 2,
+    "quotes": ["warn", "single"]
+  },
+
+  "root": true,
+
+  "extends": [
+    "eslint:recommended"
+  ]
+}
