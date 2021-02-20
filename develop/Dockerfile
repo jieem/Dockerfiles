@@ -69,3 +69,4 @@ EXPOSE 22
 
 VOLUME /opt
 
+CMD /usr/sbin/init
