@@ -49,21 +49,7 @@ RUN wget -P /usr/local/src/ https://nodejs.org/dist/v14.16.0/node-v14.16.0-linux
     npm install -g yarn && \
     ln -s /usr/local/node/bin/* /usr/local/bin/.
 
-#develop
-COPY config/* /opt/.
-
-RUN useradd develop && \
-    su - develop -s /bin/sh -c "mkdir -p /home/develop/{.go,bin,.vim/template}" && \
-    chown develop.develop /home/eslintrc.json /home/prettierrc.json /home/vimrc /home/config.html && \
-    mv /home/eslintrc.json /home/develop/.eslintrc.json && \
-    mv /home/prettierrc.json home/develop/.prettierrc.json && \
-    mv /home/vimrc /home/develop/.vimrc && \
-    mv /home/config.js /home/develop/.vim/template/ && \
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" && \
-    echo 'alias ls="ls --color=auto"' >> /home/develop/.bashrc && \
-    echo 'alias ll="ls -l"' >> /home/develop/.bashrc
-
+#expose port
 EXPOSE 22 80 443
 
 VOLUME /opt
