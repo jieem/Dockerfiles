@@ -40,6 +40,7 @@ Plug 'preservim/tagbar'
 Plug 'ycm-core/YouCompleteMe'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'dense-analysis/ale'
+Plug 'mattn/emmet-vim'
 Plug 'Chiel92/vim-autoformat'
 call plug#end()
 
@@ -114,13 +115,13 @@ let g:ale_lint_on_save = 1
 let g:ale_linters_explicit = 1
 "#run fixers when you save files.
 "let g:ale_fix_on_save = 1
-let g:ale_javascript_prettier_options = '--config /home/develop/.prettierrc.json'
-let g:ale_javascript_eslint_options = '--config /home/develop/.eslintrc.json'
+"let g:ale_javascript_prettier_options = '--config /home/develop/.prettierrc.json'
+"let g:ale_javascript_eslint_options = '--config /home/develop/.eslintrc.json'
 let g:ale_linters = {
 \   'cpp': ['clang'],
 \   'c': ['clang'],
 \   'html': ['htmlhint'],
-\   'css': ['csslint'],
+\   'css': ['stylelint'],
 \   'javascript': ['eslint'],
 \ }
 let g:ale_fixers = {
@@ -132,6 +133,14 @@ nmap <leader>p <Plug>(ale_previous_wrap)
 nmap <leader>n <Plug>(ale_next_wrap)
 nmap <Leader>e :ALEDetail<CR>
 nmap <leader>f :ALEFix<CR>
+
+"=================
+"emmet-vim
+"=================
+let g:user_emmet_mode='i'
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+let g:user_emmet_leader_key=','
 
 "=================
 "auto-format
@@ -146,7 +155,7 @@ nmap <F10> :w<CR> :!gcc -Wall -Wextra -Werror -o %< % && ./%< <CR>
 "=================
 "load template
 "=================
-autocmd BufNewFile *.html 0r ~/.vim/template/config.html
+"autocmd BufNewFile *.html 0r ~/.vim/template/config.html
 
 "================
 "hot key list

@@ -31,24 +31,23 @@ RUN mkdir /usr/local/vim && \
 
 #install go
 RUN mkdir -p /usr/local/go && \
-    wget -P /usr/local/src/ https://golang.org/dl/go1.15.6.linux-amd64.tar.gz && \
-    cd /usr/local/src/ && tar xf go1.15.6.linux-amd64.tar.gz && \
-    mv /usr/local/src/go /usr/local/go/go115 && \
-    ln -s /usr/local/go/go115/bin/* /usr/local/bin/. && \
-    echo -e "\n#golang\nexport GOROOT=/usr/local/go/go115" >> /etc/profile && \
-    echo -e "export GO111MODULE=on" >> /etc/profile && \
+    wget -P /usr/local/src/ https://golang.org/dl/go1.16.2.linux-amd64.tar.gz && \
+    cd /usr/local/src/ && tar xf go1.16.2.linux-amd64.tar.gz && \
+    mv /usr/local/src/go /usr/local/go/go116 && \
+    ln -s /usr/local/go/go116/bin/* /usr/local/bin/. && \
+    echo -e "\n#golang\nexport GOROOT=/usr/local/go/go116" >> /etc/profile && \
     echo -e "export GOPATH=\$HOME/.go\nexport GOBIN=\$HOME/bin\n" >> /etc/profile
 
 #install nodejs
-RUN wget -P /usr/local/src/ https://nodejs.org/dist/v14.15.4/node-v14.15.4-linux-x64.tar.xz && \
-    cd /usr/local/src/ && tar xf node-v14.15.4-linux-x64 && \
-    mv /usr/local/src/node-v14.15.1-linux-x64 /usr/local/node && \
+RUN wget -P /usr/local/src/ https://nodejs.org/dist/v14.16.0/node-v14.16.0-linux-x64.tar.xz && \
+    cd /usr/local/src/ && tar xf node-v14.16.0-linux-x64.tar.xz && \
+    mv /usr/local/src/node-v14.16.0-linux-x64 /usr/local/node && \
     echo -e "#node\nexport NODE_HOME=/usr/local/node" >> /etc/profile && \
-    echo -e "export PATH=\$PATH:\$NODE_HOME/bin\n" >> /etc/profile && \
     source /etc/profile && \
     rm -rf /usr/local/src/* && \
     npm config set registry https://registry.npm.taobao.org && \
-    npm install -g typescript htmlhint csslint prettier eslint
+    npm install -g yarn && \
+    ln -s /usr/local/node/bin/* /usr/local/bin/.
 
 #develop
 COPY config/* /opt/.
@@ -59,13 +58,13 @@ RUN useradd develop && \
     mv /home/eslintrc.json /home/develop/.eslintrc.json && \
     mv /home/prettierrc.json home/develop/.prettierrc.json && \
     mv /home/vimrc /home/develop/.vimrc && \
-    mv /home/config.html /home/develop/.vim/template/ && \
+    mv /home/config.js /home/develop/.vim/template/ && \
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" && \
     echo 'alias ls="ls --color=auto"' >> /home/develop/.bashrc && \
     echo 'alias ll="ls -l"' >> /home/develop/.bashrc
 
-EXPOSE 22
+EXPOSE 22 80 443
 
 VOLUME /opt
 

@@ -23,8 +23,7 @@
 
   "rules": {
     "eqeqeq": "warn",
-    "curly": 2,
-    "quotes": ["warn", "single"]
+    "curly": 2
   },
 
   "root": true,
