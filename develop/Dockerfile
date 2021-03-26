@@ -50,7 +50,7 @@ RUN wget -P /usr/local/src/ https://nodejs.org/dist/v14.16.0/node-v14.16.0-linux
     ln -s /usr/local/node/bin/* /usr/local/bin/.
 
 #expose port
-EXPOSE 22 80 443
+EXPOSE 80 443 22022 
 
 VOLUME /opt
 
