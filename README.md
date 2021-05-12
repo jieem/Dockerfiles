@@ -27,7 +27,7 @@ docker run -d -p 3307:3306 \
 docker-compose up -d
 
 ## sentry
-docker run --rm sentry config generate-secret-key
-docker-compose up -d
-docker-compose exec sentry sentry upgrade
+docker run --rm sentry config generate-secret-key \
+docker-compose up -d \
+docker-compose exec sentry sentry upgrade \
 docker-compose restart sentry
