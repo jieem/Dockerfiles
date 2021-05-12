@@ -1,0 +1,67 @@
+version: '3.8'
+services:
+  sentry-postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_USER: sentry
+      POSTGRES_DB: sentry
+    volumes:
+      - "/opt/postgres/data:/var/lib/postgresql/data"
+  sentry-redis:
+    image: redis
+    restart: always
+    volumes:
+      - "/opt/redis/data:/data"
+  sentry:
+    image: sentry
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      SENTRY_SECRET_KEY: key
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: secret
+      SENTRY_REDIS_HOST: redis
+    links:
+      - sentry-postgres:postgres
+      - sentry-redis:redis
+    depends_on:
+      - sentry-postgres
+      - sentry-redis
+  sentry-corn:
+    image: sentry
+    restart: always
+    environment: 
+      SENTRY_SECRET_KEY: key
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: secret
+      SENTRY_REDIS_HOST: redis
+    command: ["sentry", "run", "cron"]
+    links:
+      - sentry-postgres:postgres
+      - sentry-redis:redis
+    depends_on:
+      - sentry-postgres
+      - sentry-redis
+      - sentry
+  sentry-work:
+    image: sentry
+    restart: always
+    environment:
+      SENTRY_SECRET_KEY: key
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: secret
+      SENTRY_REDIS_HOST: redis
+    command: ["sentry", "run", "worker"]
+    links:
+      - sentry-postgres:postgres
+      - sentry-redis:redis
+    depends_on:
+      - sentry-postgres
+      - sentry-redis
+      - sentry
