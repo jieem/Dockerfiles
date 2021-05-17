@@ -29,5 +29,5 @@ docker-compose up -d
 ## sentry
 docker run --rm sentry config generate-secret-key \
 docker-compose up -d \
-docker-compose exec sentry sentry upgrade \
+docker exec -it sentry_xx sh -c "sentry upgrade" \
 docker-compose restart sentry

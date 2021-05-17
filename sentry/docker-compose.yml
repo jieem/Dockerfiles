@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   sentry-postgres:
-    image: postgres
+    image: postgres:latest
     restart: always
     environment:
       POSTGRES_PASSWORD: secret
@@ -10,12 +10,12 @@ services:
     volumes:
       - "/opt/postgres/data:/var/lib/postgresql/data"
   sentry-redis:
-    image: redis
+    image: redis:latest
     restart: always
     volumes:
       - "/opt/redis/data:/data"
   sentry:
-    image: sentry
+    image: sentry:latest
     restart: always
     ports:
       - "9000:9000"
@@ -32,7 +32,7 @@ services:
       - sentry-postgres
       - sentry-redis
   sentry-corn:
-    image: sentry
+    image: sentry:latest
     restart: always
     environment: 
       SENTRY_SECRET_KEY: key
@@ -49,7 +49,7 @@ services:
       - sentry-redis
       - sentry
   sentry-work:
-    image: sentry
+    image: sentry:latest
     restart: always
     environment:
       SENTRY_SECRET_KEY: key
