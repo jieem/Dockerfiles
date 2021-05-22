@@ -9,11 +9,13 @@ services:
       POSTGRES_DB: sentry
     volumes:
       - "/opt/postgres/data:/var/lib/postgresql/data"
+
   sentry-redis:
     image: redis:latest
     restart: always
     volumes:
       - "/opt/redis/data:/data"
+
   sentry:
     image: sentry:latest
     restart: always
@@ -31,6 +33,8 @@ services:
     depends_on:
       - sentry-postgres
       - sentry-redis
+
+  # sentry corn job
   sentry-corn:
     image: sentry:latest
     restart: always
@@ -48,6 +52,8 @@ services:
       - sentry-postgres
       - sentry-redis
       - sentry
+  
+  # sentry work node
   sentry-work:
     image: sentry:latest
     restart: always

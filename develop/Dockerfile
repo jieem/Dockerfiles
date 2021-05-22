@@ -2,12 +2,6 @@ FROM centos:latest
 MAINTAINER minj "mminjjie@gmail.com"
 LABEL version="8.0" description="develop tool" by="centos8"
   
-#podman run -d --restart=always \
-#--privileged -p 22022:22 \
-#-v /opt/develop:/opt \
-#--name develop --hostname=centos \
-#centos:develop /usr/sbin/init
-
 #manual configuration items: 
 #vim plug, passwd of develop, .ssh
 

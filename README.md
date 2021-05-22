@@ -1,7 +1,11 @@
 # Docker
-## ssh service 
-docker build -t xx:xx .
-docker run -it --name ssh -p 22:22 xx:xx /bin/bash
+
+## develop
+docker run -d --restart=always \
+--privileged -p 22022:22 \
+-v /opt/develop:/opt \
+--name develop --hostname=centos \
+centos:develop /usr/sbin/init
 
 ## mysql
 docker build -t centos:mysql_v1 .
@@ -30,6 +34,8 @@ docker-compose up -d
 docker run --rm sentry config generate-secret-key \
 docker-compose up -d \
 docker exec -it sentry_xx sh -c "sentry upgrade" \
-docker-compose restart sentry \
+docker-compose restart sentry 
 
 docker exec -it sentry_xx sh -c "sentry createuser" 
+
+
