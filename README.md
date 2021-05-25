@@ -38,4 +38,13 @@ docker-compose restart sentry
 
 docker exec -it sentry_xx sh -c "sentry createuser" 
 
+## jira
+docker run --restart always \
+-v /path:/var/atlassian/application-data/jira \
+--name="jira" -d -p 8080:8080 jira:test
 
+docker exec -it jira sh -c " \
+java -jar atlassian-agent.jar \
+-d -m test@test.com -n zhengyu \
+-p jira -o http://xxx.com \
+-s xx-xx-xx-xx"
