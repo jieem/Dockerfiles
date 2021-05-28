@@ -8,19 +8,19 @@ services:
       POSTGRES_USER: sentry
       POSTGRES_DB: sentry
     volumes:
-      - "/opt/postgres/data:/var/lib/postgresql/data"
+    - "/opt/postgres/data:/var/lib/postgresql/data"
 
   sentry-redis:
     image: redis:latest
     restart: always
     volumes:
-      - "/opt/redis/data:/data"
+    - "/opt/redis/data:/data"
 
   sentry:
     image: sentry:latest
     restart: always
     ports:
-      - "9000:9000"
+    - "9000:9000"
     environment:
       SENTRY_SECRET_KEY: key
       SENTRY_POSTGRES_HOST: postgres
@@ -28,11 +28,11 @@ services:
       SENTRY_DB_PASSWORD: secret
       SENTRY_REDIS_HOST: redis
     links:
-      - sentry-postgres:postgres
-      - sentry-redis:redis
+    - sentry-postgres:postgres
+    - sentry-redis:redis
     depends_on:
-      - sentry-postgres
-      - sentry-redis
+    - sentry-postgres
+    - sentry-redis
 
   # sentry corn job
   sentry-corn:
@@ -46,12 +46,12 @@ services:
       SENTRY_REDIS_HOST: redis
     command: ["sentry", "run", "cron"]
     links:
-      - sentry-postgres:postgres
-      - sentry-redis:redis
+    - sentry-postgres:postgres
+    - sentry-redis:redis
     depends_on:
-      - sentry-postgres
-      - sentry-redis
-      - sentry
+    - sentry-postgres
+    - sentry-redis
+    - sentry
   
   # sentry work node
   sentry-work:
@@ -65,9 +65,9 @@ services:
       SENTRY_REDIS_HOST: redis
     command: ["sentry", "run", "worker"]
     links:
-      - sentry-postgres:postgres
-      - sentry-redis:redis
+    - sentry-postgres:postgres
+    - sentry-redis:redis
     depends_on:
-      - sentry-postgres
-      - sentry-redis
-      - sentry
+    - sentry-postgres
+    - sentry-redis
+    - sentry

@@ -12,29 +12,29 @@ services:
         done; (exit $$s)"
     restart: unless-stopped
     volumes:
-      - "/opt/rocket/uploads:/app/uploads"
+    - "/opt/rocket/uploads:/app/uploads"
     environment:
-      - PORT=3000
-      - ROOT_URL=http://localhost:3000
-      - MONGO_URL=mongodb://mongo:27017/rocketchat
-      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+    - PORT=3000
+    - ROOT_URL=http://localhost:3000
+    - MONGO_URL=mongodb://mongo:27017/rocketchat
+    - MONGO_OPLOG_URL=mongodb://mongo:27017/local
     depends_on:
-      - mongo
+    - mongo
     ports:
-      - "3000:3000"
+    - "3000:3000"
     labels:
-      - "traefik.backend=rocketchat"
-      - "traefik.frontend.rule=Host: your.domain.tld"
+    - "traefik.backend=rocketchat"
+    - "traefik.frontend.rule=Host: your.domain.tld"
 
   mongo:
     image: mongo:4.0
     restart: unless-stopped
     volumes:
-     - "/opt/mongo/data:/data"
-     #- ./data/dump:/dump
+    - "/opt/mongo/data:/data"
+    #- ./data/dump:/dump
     command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
     labels:
-      - "traefik.enable=false"
+    - "traefik.enable=false"
 
   # this container's job is just run the command to initialize the replica set.
   mongo-init-replica:
@@ -51,26 +51,26 @@ services:
           sleep 5;
         done; (exit $$s)"
     depends_on:
-      - mongo
+    - mongo
 
   # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
   # hubot:
   #   image: rocketchat/hubot-rocketchat:latest
   #   restart: unless-stopped
   #   environment:
-  #     - ROCKETCHAT_URL=rocketchat:3000
-  #     - ROCKETCHAT_ROOM=GENERAL
-  #     - ROCKETCHAT_USER=bot
-  #     - ROCKETCHAT_PASSWORD=botpassword
-  #     - BOT_NAME=bot
+  #   - ROCKETCHAT_URL=rocketchat:3000
+  #   - ROCKETCHAT_ROOM=GENERAL
+  #   - ROCKETCHAT_USER=bot
+  #   - ROCKETCHAT_PASSWORD=botpassword
+  #   - BOT_NAME=bot
   # you can add more scripts as you'd like here, they need to be installable by npm
-  #    - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
+  #   - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
   #  depends_on:
-  #    - rocketchat
+  #   - rocketchat
   #  labels:
-  #    - "traefik.enable=false"
+  #  - "traefik.enable=false"
   #  volumes:
-  #    - "/xx/scripts:/home/hubot/scripts"
+  #  - "/xx/scripts:/home/hubot/scripts"
   # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
   #  ports:
-  #    - "3001:8080"
+  #  - "3001:8080"
