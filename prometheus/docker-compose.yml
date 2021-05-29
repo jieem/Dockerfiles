@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    port:
+    - "9090:9090"
+    volumes:
+    - "/path/config:/etc/prometheus"
+    - "/path/data:/data"
+    links:
+    - alertmanager:alertmanager
+
+  grafana:
+    image: grafana/grafana
+    restart: always
+    port:
+    - "3000:3000"
+    links:
+    - prometheus:prometheus
+
+  alertmanager:
+    image: bitnami/alertmanager:latest
+    restart: always
+    port:
+    - "9093:9093"
+    volumes:
+    - "/path/conf:/opt/bitnami/alertmanager/conf"
+    command: ["--config.file=/opt/bitnami/alertmanager/conf/alertmanager.yml", "--storage.path=/opt/bitnami/alertmanager/data"]

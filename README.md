@@ -48,3 +48,7 @@ java -jar atlassian-agent.jar \
 -d -m test@test.com -n zhengyu \
 -p jira -o http://xxx.com \
 -s xx-xx-xx-xx"
+
+## prometheus
+docker-compose up -d
+
