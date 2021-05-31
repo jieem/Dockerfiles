@@ -52,3 +52,7 @@ java -jar atlassian-agent.jar \
 ## prometheus
 docker-compose up -d
 
+## kubernetes
+kubectl apply -f apiserver-to-kubelet-rbac.yaml
+kubectl apply -f calico.yaml
+./deploy.sh | kubectl apply -f coredns.yaml.sed
